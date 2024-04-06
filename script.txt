@@ -1,0 +1,16 @@
+select disk 0
+clean
+convert gpt
+rem Partition 1: System (EFI)
+create partition efi size=100
+format quick fs=ntfs label="EFI"
+rem Partition 2: Microsoft Reserved Partition (MSR)
+create partition msr size=16
+rem Partition 3: Windows
+create partition primary
+shrink desired=1000 minimum=1000
+format quick fs=ntfs label="Windows"
+rem Partition 4: Recovery Partition
+create partition primary id=de94bba4-06d1-4d40-a16a-bfd50179d6ac
+gpt attributes=0x8000000000000001
+format quick fs=ntfs label="Recovery"
